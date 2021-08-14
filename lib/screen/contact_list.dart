@@ -53,7 +53,7 @@ class _ContactListPageState extends State<ContactListPage> {
                       itemCount: contactList.length,
                       itemBuilder: (context, index) {
                         final contact = contactList[index];
-                        print("Contatc List : ${contact.name}");
+                        // print("Contact Name : ${contact.name}");
                         return SingleContactTile(
                           contact: contact,
                         );
