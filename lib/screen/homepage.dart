@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:local_database_project/services/hive_services_for_contact_model.dart';
 
 import '../constants/constants.dart';
+import '../services/hive_services_for_contact_model.dart';
 import 'contact_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,18 +23,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("=====Widget Rebuild ========");
+    // print("=====Widget Rebuild ========");
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hive Basic"),
+        title: const Text("Hive Basic Contact App"),
       ),
       body: Column(
         children: [
           const SizedBox(height: 10),
-          ValueListenableBuilder(
+          ValueListenableBuilder<Box<bool>>(
             valueListenable: Hive.box<bool>(ThemeBox).listenable(),
-            builder: (context, Box box, widget) {
-              final bool isDark = box.get(IsDarkKey);
+            builder: (context, box, widget) {
+              final isDark = box.get(IsDarkKey, defaultValue: false) ?? false;
               return SwitchListTile(
                 value: isDark,
                 onChanged: (value) {
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           const SizedBox(height: 10),
-          const Expanded(
+          Expanded(
             child: ContactListPage(),
           ),
         ],

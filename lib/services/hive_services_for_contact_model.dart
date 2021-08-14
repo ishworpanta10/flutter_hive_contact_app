@@ -1,9 +1,8 @@
-import 'package:local_database_project/hive_box/boxes.dart';
-
+import '../hive_box/boxes.dart';
 import '../model/contact_model.dart';
 
 class HiveServiceForContactModel {
-  Future addContact({
+  Future<void> addContact({
     required String name,
     String? email,
     required String phone,
@@ -18,10 +17,27 @@ class HiveServiceForContactModel {
 
     //getting box list
     final box = Boxes.getContactBox();
-    //we can put key value also as
     // await box.put("contactList", contactModel);
     await box.add(contactModel);
+  }
 
-    //  now  In setState and adding this contact in local contact list variable
+  Future<void> editContact({
+    required ContactModel oldContact,
+    required String name,
+    String? email,
+    required String phone,
+    required bool isFav,
+  }) async {
+    oldContact
+      ..name = name
+      ..phone = int.parse(phone)
+      ..email = email
+      ..isFavourite = isFav;
+
+    await oldContact.save();
+  }
+
+  Future<void> deleteContact({required ContactModel oldContact}) async {
+    await oldContact.delete();
   }
 }

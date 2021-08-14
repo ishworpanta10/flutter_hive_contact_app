@@ -19,9 +19,9 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Box>(
       valueListenable: Hive.box<bool>(ThemeBox).listenable(),
-      builder: (context, Box box, widget) {
+      builder: (context, box, widget) {
         final bool isDark = box.get(IsDarkKey, defaultValue: false);
         return MaterialApp(
           title: 'Flutter Demo',
