@@ -8,7 +8,7 @@ class ContactModel extends HiveObject {
   late String name;
 
   @HiveField(1)
-  late String email;
+  late String? email;
 
   @HiveField(2)
   late int phone;

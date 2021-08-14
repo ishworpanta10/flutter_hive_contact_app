@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_database_project/hive_box/boxes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/constants.dart';
 import '../model/contact_model.dart';
@@ -52,7 +53,19 @@ class _ContactListPageState extends State<ContactListPage> {
                         final contact = contactList[index];
                         return ListTile(
                           title: Text(contact.name),
-                          subtitle: Text(contact.email),
+                          // subtitle: contact.email!.isEmpty ? null : Text(contact.email!),
+                          subtitle: Text(contact.phone.toString()),
+                          trailing: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              contact.isFavourite ? Icons.favorite : Icons.favorite_border,
+                              color: contact.isFavourite ? Colors.red : null,
+                              size: contact.isFavourite ? 30 : 25,
+                            ),
+                          ),
+                          onTap: () {
+                            _launchURL("tel:${contact.phone}");
+                          },
                         );
                       },
                     ),
@@ -62,4 +75,6 @@ class _ContactListPageState extends State<ContactListPage> {
       },
     );
   }
+
+  void _launchURL(String url) async => await canLaunch(url) ? await launch(url) : throw Exception('Could not launch $url');
 }

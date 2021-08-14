@@ -88,11 +88,12 @@ class _HomePageState extends State<HomePage> {
               ),
               TextFormField(
                 controller: _phoneController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   hintText: "phone",
                 ),
                 validator: (value) {
-                  return value!.trim().isEmpty ? "Phone cannot be empty" : null;
+                  return value!.trim().isEmpty || int.parse(value).isNaN ? "Invalid phone number" : null;
                 },
               ),
               CheckboxListTile(
@@ -117,6 +118,7 @@ class _HomePageState extends State<HomePage> {
         TextButton(
           onPressed: () {
             Navigator.pop(context);
+            clearAllController();
           },
           child: const Text("Cancel"),
         ),
