@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:local_database_project/services/hive_services_for_contact_model.dart';
 
 import '../constants/constants.dart';
 import 'contact_list.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final _nameController = TextEditingController();
+
+  final _emailController = TextEditingController();
+
+  final _phoneController = TextEditingController();
+
+  bool isFavourite = false;
+
   @override
   Widget build(BuildContext context) {
     print("=====Widget Rebuild ========");
@@ -38,7 +54,7 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => _showAlert(context),
+            builder: _showAlert,
           );
         },
         child: const Icon(Icons.add),
@@ -49,35 +65,53 @@ class HomePage extends StatelessWidget {
   AlertDialog _showAlert(BuildContext context) {
     return AlertDialog(
       title: const Text("Add Contact"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: "name",
-            ),
+      content: StatefulBuilder(
+        builder: (context, setState) => Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                validator: (value) {
+                  return value!.trim().isEmpty ? "Name cannot be empty" : null;
+                },
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  hintText: "name",
+                ),
+              ),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  hintText: "email",
+                ),
+              ),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(
+                  hintText: "phone",
+                ),
+                validator: (value) {
+                  return value!.trim().isEmpty ? "Phone cannot be empty" : null;
+                },
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Is Favourite'),
+                value: isFavourite,
+                onChanged: (value) {
+                  setState(() {
+                    isFavourite = value!;
+                  });
+                },
+              ),
+            ],
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: "email",
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: "phone",
-            ),
-          ),
-          CheckboxListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('Is Favourite'),
-            value: false,
-            onChanged: (value) {},
-          ),
-        ],
+        ),
       ),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: _addContact,
           child: const Text("Add"),
         ),
         TextButton(
@@ -88,5 +122,25 @@ class HomePage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _addContact() {
+    if (_formKey.currentState!.validate()) {
+      HiveServiceForContactModel().addContact(
+        name: _nameController.text,
+        phone: _phoneController.text,
+        email: _emailController.text,
+        isFav: isFavourite,
+      );
+      Navigator.pop(context);
+      clearAllController();
+    }
+  }
+
+  void clearAllController() {
+    _phoneController.clear();
+    _nameController.clear();
+    _emailController.clear();
+    isFavourite = false;
   }
 }

@@ -8,9 +8,9 @@ import 'screen/homepage.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(ContactModelAdapter());
   await Hive.openBox<bool>(ThemeBox);
   await Hive.openBox<ContactModel>(ContactBox);
-  Hive.registerAdapter(ContactModelAdapter());
   runApp(
     MyApp(),
   );
