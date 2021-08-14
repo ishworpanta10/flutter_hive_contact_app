@@ -2,5 +2,8 @@
 
 ## Hive Basic Contact App With Persistent Theming
 
-<img height="480px" src="screenshots/home.png" >     <img height="480px" src="screenshots/edit.png" > 
-<img height="480px" src="screenshots/add.png" > 
+<p align="center">
+  <img src="/screenshots/home.png"  height="480">   &nbsp; &nbsp; &nbsp;  &nbsp; 
+  <img src="/screenshots/edit.png"  height="480">   &nbsp; &nbsp; &nbsp;  &nbsp; 
+  <img src="/screenshots/add.png" height="480">    &nbsp; &nbsp; &nbsp;  &nbsp;  
+</p>
