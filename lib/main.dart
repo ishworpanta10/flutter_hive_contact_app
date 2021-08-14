@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'constants/constants.dart';
+import 'model/contact_model.dart';
 import 'screen/homepage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox<bool>(ThemeBox);
+  await Hive.openBox<ContactModel>(ContactBox);
+  Hive.registerAdapter(ContactModelAdapter());
   runApp(
     MyApp(),
   );
